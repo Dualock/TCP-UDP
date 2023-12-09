@@ -1,35 +1,22 @@
 import socket
 
-def sendResponse(message, client):
-    client.send(message.encode('utf-8'))
-
-
 def run_server():
     # Server IP and port configuration
     local_host = '127.0.0.1'
     port = 9999
 
-    # Socket initialization
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # Socket initialization, socket datagram
+    server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server.bind((local_host, port))
 
-    #Port listening
-    server.listen()
-    print(f'Waiting for client to connect {local_host}:{port}')
+    # Receive 1024 bytes of data
+    message, address = server.recvfrom(1024)
+    message = message.decode('utf-8')
 
-    #Accept connection
-    client, address = server.accept()
-    handshake(client, address)
-    #while (True): 
-    # Receive lowercase message
-    message = client.recv(1024).decode('utf-8')
-    print("Received: ", message)
-    # Converting to Upper case
-    message = message.upper()
+    #20 bytes of IP header + 8 bytes of UDP header UDP
+    datagram_size = len(message) + 28  
+    print(f"From {address}: {message}, Datagram size {datagram_size} bytes")
+    server.sendto('Hello Client,'.encode('utf-8').upper(), address)
 
-    #Sending to the client
-    sendResponse(message, client)
 
-    # Disconnect
-    client.close()
-    server.close()
+

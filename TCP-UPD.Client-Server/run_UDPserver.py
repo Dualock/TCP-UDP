@@ -1,4 +1,4 @@
-from code import tcp_client, tcp_server, udp_client, udp_server
+from code import udp_server
 
-tcp_server.run_server()
+udp_server.run_server()
 

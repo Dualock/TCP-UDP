@@ -9,27 +9,6 @@ def connect():
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     # 3 way handshake start
-    client.connect((local_host, port))
-    print("sending SYN to the server")
-    client.send("SYN request".encode('utf-8'))
-
-    # Waiting for the ACK
-    data = client.recv(1024).decode('utf-8')
-    print(f"Receive message: {data}")
-
-    # Sending ACK to the server
-    message = "Handshake completed!".encode('utf-8')
-    print("Sending Ack")
-    client.send(message)
-
-    # Sending a message
-    message = input("Send a lowercase message to the server: ")
-    print("Sending: ", message)
-    encoded_message = message.encode('utf-8')
-    client.send(encoded_message)
-
-    data = client.recv(1024).decode('utf-8')
-    print("receive message:", data)
-
-    # Disconnect
-    client.close()
+    client.sendto('Hello server'.encode('utf-8'), ((local_host, port)))
+    data, server_address = client.recvfrom(1024)
+    print(f"Respuesta del servidor: {data.decode('utf-8')}")

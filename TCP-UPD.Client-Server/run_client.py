@@ -1,3 +1,3 @@
-from code import tcp_client, tcp_server, udp_client, udp_server
+from code import tcp_client
 
-client = tcp_client.connect()
+tcp_client.connect()
